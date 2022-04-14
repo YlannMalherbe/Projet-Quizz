@@ -1,27 +1,27 @@
 var myArrAnswer = [{
-    "question" : "patati patata",
-    "réponses": [{"proposition":"patati","valeur":1},
-    {"proposition":"ololo","valeur":0},
-    {"proposition":"ougougou","valeur":0},
-    {"proposition":"zbbrrr","valeur":0}]
+    "question" : "Qui est Zelda ?",
+    "réponses": [{"proposition":"Une princess à sauver","valeur":1},
+    {"proposition":"Un mec qui casse des pots","valeur":0},
+    {"proposition":"Un mec en vert","valeur":0},
+    {"proposition":"Le voisin du quartier","valeur":0}]
 },{
-    "question" : "patati patatra",
-    "réponses": [{"proposition":"patati","valeur":0},
-    {"proposition":"omg","valeur":0},
-    {"proposition":"lol","valeur":0},
-    {"proposition":"rl","valeur":1}]
+    "question" : "Que signifie les initials NSI ?",
+    "réponses": [{"proposition":"Nombres de Soldats Indisponibles","valeur":0},
+    {"proposition":"Nom Sans Intêret","valeur":0},
+    {"proposition":"Notoriété Saine et International","valeur":0},
+    {"proposition":"Numérique et Science Informatique","valeur":1}]
 },{
-    "question" : "patatra patata",
-    "réponses": [{"proposition":"patati","valeur":0},
-    {"proposition":"jpp","valeur":1},
-    {"proposition":"stpp","valeur":0},
-    {"proposition":"polo","valeur":0}]
+    "question" : "Pourquoi la terre à des saisons ?",
+    "réponses": [{"proposition":"A cause de son atmosphère","valeur":0},
+    {"proposition":"A cause de sa rotion autour du Soleil et de son inclinaison","valeur":1},
+    {"proposition":"Parce que c'est comme ça","valeur":0},
+    {"proposition":"Car la terre tourne sur elle-même","valeur":0}]
 },{
-    "question" : "patata",
-    "réponses": [{"proposition":"patati","valeur":0},
-    {"proposition":"AHUZ","valeur":0},
-    {"proposition":"uaijbf","valeur":1},
-    {"proposition":"dfoui","valeur":0}]
+    "question" : "Qu'est-ce que le PH",
+    "réponses": [{"proposition":"Les HP (health point) à l'envers","valeur":0},
+    {"proposition":"Un site de Q","valeur":0},
+    {"proposition":"L'indication de l'acidité","valeur":1},
+    {"proposition":"Une contrefaçon de la marque HP","valeur":0}]
 }]
 
 var AlltextAnswer = []
@@ -29,10 +29,11 @@ var AllAnswer = []
 var NumeroDeQuestion = 0
 
 function StartProgramme() {
+    DelParExp();
     DeleteButton();
     CreateContener();
     NewTemplate();
-    createButton("Next Question","input", "Programme();",'question_contener', "beforeend");
+    createButton("Question Suivante","input", "Programme();",'question_contener', "beforeend");
 }
 
 function Programme() {
@@ -46,7 +47,7 @@ function Programme() {
         DeleteOldCard();
         DeleteButton();
         DeleteContener()
-        createButton("See your result","input SeeResult","SeeResult();",'reponse', "afterbegin");
+        createButton("Voire vos résultat","input SeeResult","SeeResult();",'reponse', "afterbegin");
     }
 }
 
@@ -56,15 +57,21 @@ function SeeResult() {
     PlayerPoints();
 }
 
+function DelParExp() {
+    let contener = document.getElementsByClassName("explanation")[0];
+    let child = contener.getElementsByTagName("p")[0];
+    contener.removeChild(child)
+}
+
 function CreateContener() {
-    let position = document.getElementsByClassName("explanation")[0];
+    let position = document.getElementsByClassName("card-contener")[0];
     let question_contener = document.createElement("div")
     let proposition = document.createElement("div")
 
     question_contener.setAttribute("class","question_contener")
     proposition.setAttribute("class","proposition")
 
-    position.insertAdjacentElement("afterend", question_contener)
+    position.insertAdjacentElement("afterbegin", question_contener)
     question_contener.insertAdjacentElement("afterbegin", proposition)
 }
 
@@ -160,7 +167,7 @@ function CreateResult() {
 
     for (var iter = 0; iter < AlltextAnswer.length; ++iter) {
         let paragraphePlayerAnswer = document.createElement("p");
-        paragraphePlayerAnswer.textContent = AlltextAnswer[iter];
+        paragraphePlayerAnswer.textContent = String(iter)+" - "+AlltextAnswer[iter];
 
         if (AllAnswer[iter] == 1) {
             paragraphePlayerAnswer.setAttribute("class", "PlayerAnswer True")
@@ -177,7 +184,7 @@ function CreateResult() {
         for (var iter = 0; iter < myArrAnswer.length; ++iter){
             if (myArrAnswer[count]["réponses"][iter]["valeur"] == 1) {
                 let paragrapheAnswer = document.createElement('p');
-                paragrapheAnswer.textContent =  myArrAnswer[count]["réponses"][iter]["proposition"]
+                paragrapheAnswer.textContent = String(count)+" - "+ myArrAnswer[count]["réponses"][iter]["proposition"]
                 AnswerPlacement.insertAdjacentElement('beforeend', paragrapheAnswer)
             } 
         }
@@ -197,6 +204,6 @@ function PlayerPoints() {
 
     let scorePlacement = document.getElementsByClassName("reponse")[0];
     let score = document.createElement('p');
-    score.textContent = "Félicitation, vous avez fini le quizz, Votre score est de : "+String(PlayerPoint)+"/"+String(AllAnswer.length)+" !"
+    score.innerHTML = "Félicitation, vous avez fini le quizz <br> Votre score est de : <strong class='score'>"+String(PlayerPoint)+"/"+String(AllAnswer.length)+"</strong>"
     scorePlacement.insertAdjacentElement("afterbegin", score)
 }
